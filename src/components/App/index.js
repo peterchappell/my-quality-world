@@ -11,6 +11,7 @@ import AppAdd from 'components/AppAdd';
 import AppHeader from 'components/AppHeader';
 import AppMain from 'components/AppMain';
 import AppNav from 'components/AppNav';
+import ItemAdd from 'components/ItemAdd';
 import ItemDetails from 'components/ItemDetails';
 
 const useStyles = makeStyles(() => ({
@@ -27,6 +28,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const NEW_ITEM = {
+  name: '',
+  image: null,
+  physiology: 0,
+  loveAndBelonging: 0,
+  power: 0,
+  fun: 0,
+  freedom: 0,
+  level: 0,
+};
+
 const App = () => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
@@ -34,9 +46,14 @@ const App = () => {
   const history = useHistory();
 
   const addItem = (itemData) => {
+    const newItem = {
+      ...NEW_ITEM,
+      image: itemData,
+      name: `newItem ${items.length}`,
+    };
     setItems([
       ...items,
-      itemData,
+      newItem,
     ]);
     setCurrentItemIndex(items.length);
     history.push('/');
@@ -70,7 +87,7 @@ const App = () => {
         <Container maxWidth="md" component="main" className={classes.mainContainer}>
           <Switch>
             <Route path="/new">
-              <ItemDetails saveHandler={addItem} />
+              <ItemAdd saveHandler={addItem} />
             </Route>
             <Route path="/edit/:itemIndex">
               <RenderDetails />

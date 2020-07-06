@@ -56,11 +56,36 @@ const ItemDetails = (props) => {
       <div>
         <TextField id="standard-basic" label="Name" value={thisItem.name} onChange={handleChange} className={classes.field} />
       </div>
-      <ItemDetailsSlider propertyName="physiology" label="Physiology" currentValue={thisItem.physiology} changeHandler={handleSliderChange} />
-      <ItemDetailsSlider propertyName="loveAndBelonging" label="Love and Belonging" currentValue={thisItem.loveAndBelonging} changeHandler={handleSliderChange} />
-      <ItemDetailsSlider propertyName="power" label="Power" currentValue={thisItem.power} changeHandler={handleSliderChange} />
-      <ItemDetailsSlider propertyName="fun" label="Fun" currentValue={thisItem.fun} changeHandler={handleSliderChange} />
-      <ItemDetailsSlider propertyName="freedom" label="Freedom" currentValue={thisItem.freedom} changeHandler={handleSliderChange} />
+      <ItemDetailsSlider
+        propertyName="physiology"
+        label="Physiology"
+        currentValue={thisItem.physiology}
+        changeHandler={handleSliderChange}
+      />
+      <ItemDetailsSlider
+        propertyName="loveAndBelonging"
+        label="Love and Belonging"
+        currentValue={thisItem.loveAndBelonging}
+        changeHandler={handleSliderChange}
+      />
+      <ItemDetailsSlider
+        propertyName="power"
+        label="Power"
+        currentValue={thisItem.power}
+        changeHandler={handleSliderChange}
+      />
+      <ItemDetailsSlider
+        propertyName="fun"
+        label="Fun"
+        currentValue={thisItem.fun}
+        changeHandler={handleSliderChange}
+      />
+      <ItemDetailsSlider
+        propertyName="freedom"
+        label="Freedom"
+        currentValue={thisItem.freedom}
+        changeHandler={handleSliderChange}
+      />
       <Button variant="contained" color="primary" onClick={submitItem}>
         Save
       </Button>
