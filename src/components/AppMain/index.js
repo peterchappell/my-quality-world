@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
 
@@ -15,24 +15,24 @@ const AppMain = (props) => {
   const {
     items,
     itemIndex,
+    onSlide,
   } = props;
 
   const classes = useStyles();
-  const [currentItemIndex, setCurrentItemIndex] = useState(itemIndex);
 
   const updateIndex = (newIndex) => {
-    setCurrentItemIndex(newIndex);
+    onSlide(newIndex);
   };
 
   return (
     <SwipeableViews
       enableMouseEvents
-      index={currentItemIndex}
+      index={itemIndex}
       onChangeIndex={updateIndex}
     >
-      { items.map((item, index) => (
+      { items.map((item) => (
         <div
-          key={item.name.replace(/\s/g, '_')}
+          key={`card_${item.id}`}
         >
           <div style={{ padding: '1 em', display: 'block' }}>
             { item.image && (
@@ -43,7 +43,7 @@ const AppMain = (props) => {
               />
             )}
             <p>{item.name}</p>
-            <Link to={`/edit/${index}`}>
+            <Link to={`/edit/${item.id}`}>
               edit
             </Link>
           </div>

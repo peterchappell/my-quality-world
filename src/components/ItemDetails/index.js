@@ -21,7 +21,6 @@ const ItemDetails = (props) => {
   const {
     saveHandler,
     item,
-    itemIndex,
   } = props;
 
   const classes = useStyles();
@@ -44,7 +43,7 @@ const ItemDetails = (props) => {
 
   const submitItem = (event) => {
     event.preventDefault();
-    saveHandler(thisItem, itemIndex);
+    saveHandler(thisItem);
   };
 
   useEffect(() => {
@@ -102,6 +101,7 @@ ItemDetails.defaultProps = {
     fun: 0,
     freedom: 0,
     level: 0,
+    id: 0,
   },
 };
 

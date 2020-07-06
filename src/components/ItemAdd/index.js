@@ -33,7 +33,7 @@ export default function AppAdd(props) {
     if (fileUpload) {
       saveHandler(fileUpload);
     }
-  }, [fileUpload]);
+  }, [fileUpload, saveHandler]);
 
   return (
     <div className={classes.uploadContainer}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Container from '@material-ui/core/Container';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -6,6 +6,7 @@ import {
   Route, Switch, useParams, useHistory,
 } from 'react-router-dom';
 
+import db, { tableName } from 'utils/db';
 import theme from 'utils/muiTheme';
 import AppAdd from 'components/AppAdd';
 import AppHeader from 'components/AppHeader';
@@ -36,7 +37,7 @@ const NEW_ITEM = {
   power: 0,
   fun: 0,
   freedom: 0,
-  level: 0,
+  level: 5,
 };
 
 const App = () => {
@@ -49,36 +50,62 @@ const App = () => {
     const newItem = {
       ...NEW_ITEM,
       image: itemData,
-      name: `newItem ${items.length}`,
+      name: '',
     };
-    setItems([
-      ...items,
-      newItem,
-    ]);
-    setCurrentItemIndex(items.length);
+    db.table(tableName)
+      .add(newItem)
+      .then((id) => {
+        setItems([
+          ...items,
+          {
+            ...newItem,
+            id,
+          },
+        ]);
+        setCurrentItemIndex(items.length);
+      });
     history.push('/');
   };
 
-  const saveItem = (itemData, itemIndex) => {
+  const saveItem = (itemData) => {
     const updatedItems = [
       ...items,
     ];
-    updatedItems[itemIndex] = itemData;
+    const indexOfUpdate = updatedItems.findIndex((item) => item.id === itemData.id);
+    updatedItems[indexOfUpdate] = itemData;
     setItems(updatedItems);
-    setCurrentItemIndex(itemIndex);
+    setCurrentItemIndex(indexOfUpdate);
+    db.table(tableName).update(itemData.id, itemData);
     history.push('/');
   };
 
-  function RenderDetails() {
-    const { itemIndex } = useParams();
+  const handleCardSlide = (slideToIndex) => {
+    setCurrentItemIndex(slideToIndex);
+  };
+
+  const RenderDetails = () => {
+    const { itemId } = useParams();
+    const editingItem = items.find((item) => item.id === parseInt(itemId, 10));
+    if (editingItem) {
+      return (
+        <ItemDetails
+          saveHandler={saveItem}
+          item={editingItem}
+        />
+      );
+    }
     return (
-      <ItemDetails
-        saveHandler={saveItem}
-        item={items[itemIndex]}
-        itemIndex={parseInt(itemIndex, 10)}
-      />
+      <p>That item does not exist...</p>
     );
-  }
+  };
+
+  useEffect(() => {
+    db.table(tableName)
+      .toArray()
+      .then((storedItems) => {
+        setItems(storedItems);
+      });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,11 +116,20 @@ const App = () => {
             <Route path="/new">
               <ItemAdd saveHandler={addItem} />
             </Route>
-            <Route path="/edit/:itemIndex">
+            <Route path="/edit/:itemId">
               <RenderDetails />
             </Route>
             <Route path="*">
-              <AppMain items={items} itemIndex={currentItemIndex} />
+              <AppMain
+                items={items}
+                itemIndex={currentItemIndex}
+                onSlide={handleCardSlide}
+              />
+              <p>
+                {currentItemIndex + 1}
+                /
+                {`${items.length}`}
+              </p>
               <AppAdd />
             </Route>
           </Switch>
