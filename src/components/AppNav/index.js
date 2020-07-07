@@ -21,7 +21,13 @@ const AppNav = (props) => {
         value="cards"
         icon={<ViewCarouselIcon />}
       />
-      <BottomNavigationAction label="Map" value="map" icon={<AccountTreeIcon />} />
+      <BottomNavigationAction
+        component={Link}
+        to="/map"
+        label="Map"
+        value="map"
+        icon={<AccountTreeIcon />}
+      />
     </BottomNavigation>
   );
 };

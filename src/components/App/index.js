@@ -14,6 +14,7 @@ import AppMain from 'components/AppMain';
 import AppNav from 'components/AppNav';
 import ItemAdd from 'components/ItemAdd';
 import ItemDetails from 'components/ItemDetails';
+import MapView from 'components/MapView';
 
 const useStyles = makeStyles(() => ({
   appContainer: {
@@ -118,6 +119,9 @@ const App = () => {
             </Route>
             <Route path="/edit/:itemId">
               <RenderDetails />
+            </Route>
+            <Route path="/map">
+              <MapView items={items} />
             </Route>
             <Route path="*">
               <AppMain
