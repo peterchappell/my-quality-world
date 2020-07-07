@@ -126,6 +126,12 @@ const MapView = (props) => {
             offsetX={-WIDTH / 2}
             offsetY={-HEIGHT / 2}
           >
+            {items.map((item) => renderItem(item))}
+          </Layer>
+          <Layer
+            offsetX={-WIDTH / 2}
+            offsetY={-HEIGHT / 2}
+          >
             <Circle
               fill="#ccc"
               radius={20}
@@ -143,12 +149,6 @@ const MapView = (props) => {
               x={-20}
               y={-20}
             />
-          </Layer>
-          <Layer
-            offsetX={-WIDTH / 2}
-            offsetY={-HEIGHT / 2}
-          >
-            {items.map((item) => renderItem(item))}
           </Layer>
         </Stage>
       </div>
