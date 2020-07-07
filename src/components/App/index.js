@@ -68,7 +68,7 @@ const App = () => {
     history.push('/');
   };
 
-  const saveItem = (itemData) => {
+  const saveItem = (itemData, noHistory) => {
     const updatedItems = [
       ...items,
     ];
@@ -77,7 +77,9 @@ const App = () => {
     setItems(updatedItems);
     setCurrentItemIndex(indexOfUpdate);
     db.table(tableName).update(itemData.id, itemData);
-    history.push('/');
+    if (!noHistory) {
+      history.push('/');
+    }
   };
 
   const handleCardSlide = (slideToIndex) => {
@@ -121,7 +123,7 @@ const App = () => {
               <RenderDetails />
             </Route>
             <Route path="/map">
-              <MapView items={items} />
+              <MapView items={items} handleSaveItem={saveItem} />
             </Route>
             <Route path="*">
               <AppMain
