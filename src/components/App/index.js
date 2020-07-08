@@ -12,6 +12,7 @@ import AppAdd from 'components/AppAdd';
 import AppHeader from 'components/AppHeader';
 import AppMain from 'components/AppMain';
 import AppNav from 'components/AppNav';
+import Home from 'components/Home';
 import ItemAdd from 'components/ItemAdd';
 import ItemDetails from 'components/ItemDetails';
 import MapView from 'components/MapView';
@@ -45,6 +46,7 @@ const App = () => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
+  const [currentNavValue, setCurrentNavValue] = useState('home');
   const history = useHistory();
 
   const addItem = (itemData) => {
@@ -114,7 +116,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <section className={classes.appContainer}>
         <AppHeader />
-        <Container maxWidth="md" component="main" className={classes.mainContainer}>
+        <Container component="main" className={classes.mainContainer} maxWidth={false}>
           <Switch>
             <Route path="/new">
               <ItemAdd saveHandler={addItem} />
@@ -125,7 +127,7 @@ const App = () => {
             <Route path="/map">
               <MapView items={items} handleSaveItem={saveItem} />
             </Route>
-            <Route path="*">
+            <Route path="/cards">
               <AppMain
                 items={items}
                 itemIndex={currentItemIndex}
@@ -139,9 +141,12 @@ const App = () => {
               </p>
               <AppAdd />
             </Route>
+            <Route path="/">
+              <Home items={items} />
+            </Route>
           </Switch>
         </Container>
-        <AppNav navValue="cards" />
+        <AppNav navValue={currentNavValue} navChangeHandler={setCurrentNavValue} />
       </section>
     </ThemeProvider>
   );

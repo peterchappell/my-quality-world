@@ -17,9 +17,6 @@ const useStyles = makeStyles(() => ({
       color: 'white',
     },
   },
-  siteName: {
-    fontSize: '16px',
-  },
 }));
 
 const AppHeader = () => {
@@ -29,7 +26,7 @@ const AppHeader = () => {
     <AppBar position="static" component="header">
       <Toolbar className={classes.toolbar}>
         <Link to="/" className={classes.siteNameLink}>
-          <Typography variant="h6" component="h1" className={classes.siteName}>
+          <Typography variant="h6" component="h1">
             My Quality World
           </Typography>
         </Link>

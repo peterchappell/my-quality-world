@@ -18,18 +18,14 @@ const CANVAS_WIDTH = 1000;
 const ITEM_SIZE = 100;
 
 const useStyles = makeStyles((theme) => ({
-  pageContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: `calc(100% - ${theme.spacing(2)}px)`,
-    margin: [[theme.spacing(2), 0]],
-  },
   mapContainer: {
-    height: '100%',
-    margin: [[0, 'auto']],
+    display: 'flex',
+    height: `calc(100% - ${theme.spacing(4)}px)`,
+    margin: [[theme.spacing(2), 'auto']],
     width: '100%',
   },
   map: {
+    margin: [[0, 'auto']],
     position: 'relative',
   },
 }));
@@ -188,51 +184,48 @@ const MapView = (props) => {
   });
 
   return (
-    <div className={classes.pageContainer}>
-      <div className={classes.mapContainer} ref={containerRef}>
-        <Stage
-          height={mapSize}
-          width={mapSize}
-          className={classes.map}
-          scaleX={mapScale}
-          scaleY={mapScale}
+    <div className={classes.mapContainer} ref={containerRef}>
+      <Stage
+        height={mapSize}
+        width={mapSize}
+        className={classes.map}
+        scaleX={mapScale}
+        scaleY={mapScale}
+      >
+        <Layer
+          offsetX={-CANVAS_WIDTH / 2}
+          offsetY={-CANVAS_HEIGHT / 2}
         >
-          <Layer
-            offsetX={-CANVAS_WIDTH / 2}
-            offsetY={-CANVAS_HEIGHT / 2}
-          >
-            {items.map((item) => renderItem(item))}
-          </Layer>
-          <Layer
-            offsetX={-CANVAS_WIDTH / 2}
-            offsetY={-CANVAS_HEIGHT / 2}
-          >
-            <Circle
-              fill="#f5f5f5"
-              radius={ITEM_SIZE / 2}
-              x={0}
-              y={0}
-              shadowColor="black"
-              shadowBlur={10}
-              shadowOpacity={0.3}
-              shadowOffsetX={10}
-              shadowOffsetY={10}
-            />
-            <Text
-              align="center"
-              fill="#000000"
-              fontSize={40}
-              height={ITEM_SIZE}
-              text="me"
-              verticalAlign="middle"
-              width={ITEM_SIZE}
-              x={-ITEM_SIZE / 2}
-              y={-ITEM_SIZE / 2}
-            />
-          </Layer>
-        </Stage>
-      </div>
-      <div>I am outside of the map...</div>
+          {items.map((item) => renderItem(item))}
+        </Layer>
+        <Layer
+          offsetX={-CANVAS_WIDTH / 2}
+          offsetY={-CANVAS_HEIGHT / 2}
+        >
+          <Circle
+            fill="#f5f5f5"
+            radius={ITEM_SIZE / 2}
+            x={0}
+            y={0}
+            shadowColor="black"
+            shadowBlur={10}
+            shadowOpacity={0.3}
+            shadowOffsetX={10}
+            shadowOffsetY={10}
+          />
+          <Text
+            align="center"
+            fill="#000000"
+            fontSize={40}
+            height={ITEM_SIZE}
+            text="me"
+            verticalAlign="middle"
+            width={ITEM_SIZE}
+            x={-ITEM_SIZE / 2}
+            y={-ITEM_SIZE / 2}
+          />
+        </Layer>
+      </Stage>
     </div>
   );
 };
