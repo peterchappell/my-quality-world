@@ -8,12 +8,14 @@ import {
   Rect,
   Image,
   Group,
+  Line,
 } from 'react-konva';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-const HEIGHT = 1000;
-const WIDTH = 1000;
+const CANVAS_HEIGHT = 1000;
+const CANVAS_WIDTH = 1000;
+const ITEM_SIZE = 100;
 
 const useStyles = makeStyles((theme) => ({
   pageContainer: {
@@ -47,9 +49,9 @@ const MapView = (props) => {
   const calculateNewLevel = (posX, posY) => {
     const absolutePosX = Math.abs(posX);
     const absolutePosY = Math.abs(posY);
-    const radiusAdjustment = 60 * mapScale;
+    const radiusAdjustment = ITEM_SIZE * mapScale;
     const distance = Math.sqrt(absolutePosX ** 2 + absolutePosY ** 2) * mapScale - radiusAdjustment;
-    const maxDistance = Math.sqrt((WIDTH / 2) ** 2 * 2) * mapScale - radiusAdjustment * 2;
+    const maxDistance = Math.sqrt((CANVAS_WIDTH / 2) ** 2 * 2) * mapScale - radiusAdjustment * 2;
     const level = (1 - (distance / maxDistance)) * 10;
     return level;
   };
@@ -83,15 +85,15 @@ const MapView = (props) => {
   const handleCanvasBounds = (pos) => {
     let newPosX = pos.x;
     let newPosY = pos.y;
-    if (pos.x - 50 * mapScale <= 0) {
+    if (pos.x - (ITEM_SIZE / 2) * mapScale <= 0) {
       newPosX = 50 * mapScale;
-    } else if (pos.x + 50 * mapScale >= WIDTH * mapScale) {
-      newPosX = WIDTH * mapScale - 50 * mapScale;
+    } else if (pos.x + (ITEM_SIZE / 2) * mapScale >= CANVAS_WIDTH * mapScale) {
+      newPosX = CANVAS_WIDTH * mapScale - (ITEM_SIZE / 2) * mapScale;
     }
-    if (pos.y - 50 * mapScale <= 0) {
-      newPosY = 50 * mapScale;
-    } else if (pos.y + 50 * mapScale >= HEIGHT * mapScale) {
-      newPosY = HEIGHT * mapScale - 50 * mapScale;
+    if (pos.y - (ITEM_SIZE / 2) * mapScale <= 0) {
+      newPosY = (ITEM_SIZE / 2) * mapScale;
+    } else if (pos.y + (ITEM_SIZE / 2) * mapScale >= CANVAS_HEIGHT * mapScale) {
+      newPosY = CANVAS_HEIGHT * mapScale - (ITEM_SIZE / 2) * mapScale;
     }
     return {
       x: newPosX,
@@ -112,41 +114,65 @@ const MapView = (props) => {
   const renderItem = (item) => {
     const imgEl = document.createElement('img');
     imgEl.src = item.image;
-    const itemWidth = 100;
     const itemHeight = item.imageRatio * 100;
     return (
-      <Group
-        draggable
-        key={`map_item_${item.id}`}
-        dragBoundFunc={handleCanvasBounds}
-        onDragStart={handleDragStartShadow}
-        onDragEnd={(event) => {
-          handleDragEndShadow(event);
-          saveItem(item, event.currentTarget.attrs);
-        }}
-        x={item.posX || 100}
-        y={item.posY || 100}
-        offset={{
-          x: itemWidth / 2,
-          y: itemHeight / 2,
-        }}
-        width={itemWidth}
-        height={itemHeight}
-      >
+      <React.Fragment key={`map_item_${item.id}`}>
+        <Line
+          stroke="#ccc"
+          strokeWidth={3}
+          points={[
+            0,
+            0,
+            item.posX || 100,
+            item.posY || 100,
+          ]}
+        />
         <Rect
-          shadowColor="black"
-          shadowBlur={10}
-          shadowOpacity={0.6}
-          width={itemWidth}
+          cornerRadius={5}
+          x={item.posX || 100}
+          y={item.posY || 100}
+          offset={{
+            x: ITEM_SIZE / 2,
+            y: itemHeight / 2,
+          }}
+          width={ITEM_SIZE}
           height={itemHeight}
-          fill="#000"
+          stroke="#ccc"
+          strokeWidth={3}
+          fill="#fff"
         />
-        <Image
-          image={imgEl}
-          width={itemWidth}
+        <Group
+          draggable
+          dragBoundFunc={handleCanvasBounds}
+          onDragStart={handleDragStartShadow}
+          onDragEnd={(event) => {
+            handleDragEndShadow(event);
+            saveItem(item, event.currentTarget.attrs);
+          }}
+          x={item.posX || 100}
+          y={item.posY || 100}
+          offset={{
+            x: ITEM_SIZE / 2,
+            y: itemHeight / 2,
+          }}
+          width={ITEM_SIZE}
           height={itemHeight}
-        />
-      </Group>
+        >
+          <Rect
+            shadowColor="black"
+            shadowBlur={10}
+            shadowOpacity={0.3}
+            width={ITEM_SIZE}
+            height={itemHeight}
+            fill="#000"
+          />
+          <Image
+            image={imgEl}
+            width={ITEM_SIZE}
+            height={itemHeight}
+          />
+        </Group>
+      </React.Fragment>
     );
   };
 
@@ -156,8 +182,8 @@ const MapView = (props) => {
       containerRef.current.offsetHeight,
     ));
     setMapScale(Math.min(
-      containerRef.current.offsetWidth / WIDTH,
-      containerRef.current.offsetHeight / HEIGHT,
+      containerRef.current.offsetWidth / CANVAS_WIDTH,
+      containerRef.current.offsetHeight / CANVAS_HEIGHT,
     ));
   });
 
@@ -172,31 +198,36 @@ const MapView = (props) => {
           scaleY={mapScale}
         >
           <Layer
-            offsetX={-WIDTH / 2}
-            offsetY={-HEIGHT / 2}
+            offsetX={-CANVAS_WIDTH / 2}
+            offsetY={-CANVAS_HEIGHT / 2}
           >
             {items.map((item) => renderItem(item))}
           </Layer>
           <Layer
-            offsetX={-WIDTH / 2}
-            offsetY={-HEIGHT / 2}
+            offsetX={-CANVAS_WIDTH / 2}
+            offsetY={-CANVAS_HEIGHT / 2}
           >
             <Circle
-              fill="#ccc"
-              radius={20}
+              fill="#f5f5f5"
+              radius={ITEM_SIZE / 2}
               x={0}
               y={0}
+              shadowColor="black"
+              shadowBlur={10}
+              shadowOpacity={0.3}
+              shadowOffsetX={10}
+              shadowOffsetY={10}
             />
             <Text
               align="center"
               fill="#000000"
-              fontSize={18}
-              height={40}
-              text="Me"
+              fontSize={40}
+              height={ITEM_SIZE}
+              text="me"
               verticalAlign="middle"
-              width={40}
-              x={-20}
-              y={-20}
+              width={ITEM_SIZE}
+              x={-ITEM_SIZE / 2}
+              y={-ITEM_SIZE / 2}
             />
           </Layer>
         </Stage>
