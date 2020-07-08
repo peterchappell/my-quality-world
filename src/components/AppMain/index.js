@@ -16,9 +16,19 @@ const AppMain = (props) => {
     items,
     itemIndex,
     onSlide,
+    handleSaveItem,
   } = props;
 
   const classes = useStyles();
+
+  const setImageRatio = (item, imageAttrs) => {
+    if (!item.imageRatio) {
+      handleSaveItem({
+        ...item,
+        imageRatio: imageAttrs.height / imageAttrs.width,
+      }, true);
+    }
+  };
 
   const updateIndex = (newIndex) => {
     onSlide(newIndex);
@@ -40,6 +50,7 @@ const AppMain = (props) => {
                 src={item.image}
                 alt={`${item.name}`}
                 className={classes.itemImage}
+                onLoad={(event) => setImageRatio(item, event.target)}
               />
             )}
             <p>{item.name}</p>

@@ -17,5 +17,6 @@ body, html, #root {
 }
 
 .konvajs-content {
+  background-color: #fff;
   margin: 0 auto;
 }

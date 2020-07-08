@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import Konva from 'konva';
 
 import {
   Stage,
   Layer,
   Circle,
   Text,
+  Rect,
+  Image,
+  Group,
 } from 'react-konva';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   map: {
-    backgroundColor: 'white',
     position: 'relative',
   },
 }));
@@ -34,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 const MapView = (props) => {
   const {
     items,
-    // eslint-disable-next-line no-unused-vars
     handleSaveItem,
   } = props;
 
@@ -54,6 +54,51 @@ const MapView = (props) => {
     return level;
   };
 
+  const handleDragStartShadow = (event) => {
+    event.target.setAttrs({
+      scaleX: 1.1,
+      scaleY: 1.1,
+    });
+    event.target.children[0].setAttrs({
+      shadowOffset: {
+        x: 15,
+        y: 15,
+      },
+    });
+  };
+
+  const handleDragEndShadow = (event) => {
+    event.target.to({
+      duration: 0.2,
+      scaleX: 1,
+      scaleY: 1,
+    });
+    event.target.children[0].to({
+      duration: 0.2,
+      shadowOffsetX: 5,
+      shadowOffsetY: 5,
+    });
+  };
+
+  const handleCanvasBounds = (pos) => {
+    let newPosX = pos.x;
+    let newPosY = pos.y;
+    if (pos.x - 50 * mapScale <= 0) {
+      newPosX = 50 * mapScale;
+    } else if (pos.x + 50 * mapScale >= WIDTH * mapScale) {
+      newPosX = WIDTH * mapScale - 50 * mapScale;
+    }
+    if (pos.y - 50 * mapScale <= 0) {
+      newPosY = 50 * mapScale;
+    } else if (pos.y + 50 * mapScale >= HEIGHT * mapScale) {
+      newPosY = HEIGHT * mapScale - 50 * mapScale;
+    }
+    return {
+      x: newPosX,
+      y: newPosY,
+    };
+  };
+
   const saveItem = (item, shapeAttributes) => {
     const updatedItem = {
       ...item,
@@ -67,49 +112,53 @@ const MapView = (props) => {
   const renderItem = (item) => {
     const imgEl = document.createElement('img');
     imgEl.src = item.image;
+    const itemWidth = 100;
+    const itemHeight = item.imageRatio * 100;
     return (
-      <Circle
-        key={`map_item_${item.id}`}
+      <Group
         draggable
-        dragBoundFunc={(pos) => {
-          let newPosX = pos.x;
-          let newPosY = pos.y;
-          if (pos.x - 50 * mapScale <= 0) {
-            newPosX = 50 * mapScale;
-          } else if (pos.x + 50 * mapScale >= WIDTH * mapScale) {
-            newPosX = WIDTH * mapScale - 50 * mapScale;
-          }
-          if (pos.y - 50 * mapScale <= 0) {
-            newPosY = 50 * mapScale;
-          } else if (pos.y + 50 * mapScale >= HEIGHT * mapScale) {
-            newPosY = HEIGHT * mapScale - 50 * mapScale;
-          }
-          return {
-            x: newPosX,
-            y: newPosY,
-          };
-        }}
+        key={`map_item_${item.id}`}
+        dragBoundFunc={handleCanvasBounds}
+        onDragStart={handleDragStartShadow}
         onDragEnd={(event) => {
+          handleDragEndShadow(event);
           saveItem(item, event.currentTarget.attrs);
         }}
-        height={100}
         x={item.posX || 100}
         y={item.posY || 100}
-        fillPatternImage={imgEl}
-        fillPatternScale={{ x: 0.3, y: 0.3 }}
-        width={100}
-      />
+        offset={{
+          x: itemWidth / 2,
+          y: itemHeight / 2,
+        }}
+        width={itemWidth}
+        height={itemHeight}
+      >
+        <Rect
+          shadowColor="black"
+          shadowBlur={10}
+          shadowOpacity={0.6}
+          width={itemWidth}
+          height={itemHeight}
+          fill="#000"
+        />
+        <Image
+          image={imgEl}
+          width={itemWidth}
+          height={itemHeight}
+        />
+      </Group>
     );
   };
 
   useEffectOnlyOnMount(() => {
-    console.log('items', items);
-    console.log('containerRef', containerRef.current, containerRef.current.offsetWidth, containerRef.current.offsetHeight);
-    console.log('scale?', Math.min(containerRef.current.offsetWidth / WIDTH, containerRef.current.offsetHeight / HEIGHT));
-    setMapSize(Math.min(containerRef.current.offsetWidth, containerRef.current.offsetHeight));
-    // eslint-disable-next-line max-len
-    setMapScale(Math.min(containerRef.current.offsetWidth / WIDTH, containerRef.current.offsetHeight / HEIGHT));
-    // drawItems();
+    setMapSize(Math.min(
+      containerRef.current.offsetWidth,
+      containerRef.current.offsetHeight,
+    ));
+    setMapScale(Math.min(
+      containerRef.current.offsetWidth / WIDTH,
+      containerRef.current.offsetHeight / HEIGHT,
+    ));
   });
 
   return (

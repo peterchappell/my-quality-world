@@ -68,7 +68,7 @@ const App = () => {
     history.push('/');
   };
 
-  const saveItem = (itemData, noHistory) => {
+  const saveItem = (itemData, skipHistoryUpdate) => {
     const updatedItems = [
       ...items,
     ];
@@ -77,7 +77,7 @@ const App = () => {
     setItems(updatedItems);
     setCurrentItemIndex(indexOfUpdate);
     db.table(tableName).update(itemData.id, itemData);
-    if (!noHistory) {
+    if (!skipHistoryUpdate) {
       history.push('/');
     }
   };
@@ -130,6 +130,7 @@ const App = () => {
                 items={items}
                 itemIndex={currentItemIndex}
                 onSlide={handleCardSlide}
+                handleSaveItem={saveItem}
               />
               <p>
                 {currentItemIndex + 1}
