@@ -13,6 +13,8 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import { MAX_LEVEL } from 'utils/constants';
+
 const CANVAS_HEIGHT = 1000;
 const CANVAS_WIDTH = 1000;
 const ITEM_SIZE = 100;
@@ -48,7 +50,7 @@ const MapView = (props) => {
     const radiusAdjustment = ITEM_SIZE * mapScale;
     const distance = Math.sqrt(absolutePosX ** 2 + absolutePosY ** 2) * mapScale - radiusAdjustment;
     const maxDistance = Math.sqrt((CANVAS_WIDTH / 2) ** 2 * 2) * mapScale - radiusAdjustment * 2;
-    const level = (1 - (distance / maxDistance)) * 10;
+    const level = Math.min((1 - (distance / maxDistance)) * 10, MAX_LEVEL);
     return level;
   };
 

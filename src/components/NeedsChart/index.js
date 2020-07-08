@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   valueCircle: {
     strokeLinecap: 'round',
+    color: (props) => props.colour,
   },
   outerContainer: {
     display: 'inline-flex',
@@ -32,9 +33,10 @@ const NeedsChart = (props) => {
   const {
     value,
     label,
+    colour,
   } = props;
 
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   return (
     <>
@@ -56,6 +58,7 @@ const NeedsChart = (props) => {
             classes={{
               circle: classes.valueCircle,
             }}
+            color={colour}
           />
         </div>
         <Box

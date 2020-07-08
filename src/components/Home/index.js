@@ -5,6 +5,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import NeedsChart from 'components/NeedsChart';
+import {
+  NEEDS,
+  MAX_FOR_ITEM,
+  MAX_LEVEL,
+} from 'utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,32 +21,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   needsContainer: {
-    marginTop: theme.spacing(2),
+    margin: [[theme.spacing(2), 'auto', 0]],
+    maxWidth: '700px',
   },
 }));
-
-const NEEDS = [
-  {
-    name: 'Physiology',
-    key: 'physiology',
-  },
-  {
-    name: 'Love and Belonging',
-    key: 'loveAndBelonging',
-  },
-  {
-    name: 'Power',
-    key: 'power',
-  },
-  {
-    name: 'Fun',
-    key: 'fun',
-  },
-  {
-    name: 'Freedom',
-    key: 'freedom',
-  },
-];
 
 const Home = (props) => {
   const {
@@ -52,13 +35,11 @@ const Home = (props) => {
 
   const calculateNeedMetPercent = (need) => {
     const itemsCheck = [...items];
-    const maxForNeed = itemsCheck.length * 5 * 11;
+    const maxForNeed = itemsCheck.length * MAX_FOR_ITEM * MAX_LEVEL;
     let needScore = 0;
     itemsCheck.forEach((item) => {
       needScore += item[need] * item.level;
     });
-    // const needScore = itemsCheck.reduce((accumulator, item) => item[need] * item.level);
-    console.log('need', need, maxForNeed, needScore, (needScore / maxForNeed) * 100);
     return (needScore / maxForNeed) * 100;
   };
 
@@ -78,7 +59,11 @@ const Home = (props) => {
       <Grid container spacing={3} className={classes.needsContainer}>
         { NEEDS.map((need) => (
           <Grid item xs key={`need_score_${need.key}`}>
-            <NeedsChart value={calculateNeedMetPercent(need.key)} label={need.name} />
+            <NeedsChart
+              value={calculateNeedMetPercent(need.key)}
+              label={need.name}
+              colour={need.colour}
+            />
           </Grid>
         ))}
       </Grid>

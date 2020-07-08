@@ -46,7 +46,7 @@ const App = () => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
-  const [currentNavValue, setCurrentNavValue] = useState('home');
+  const [currentNavValue, setCurrentNavValue] = useState('');
   const history = useHistory();
 
   const addItem = (itemData) => {
@@ -67,7 +67,7 @@ const App = () => {
         ]);
         setCurrentItemIndex(items.length);
       });
-    history.push('/');
+    history.push('/cards');
   };
 
   const saveItem = (itemData, skipHistoryUpdate) => {
@@ -80,7 +80,7 @@ const App = () => {
     setCurrentItemIndex(indexOfUpdate);
     db.table(tableName).update(itemData.id, itemData);
     if (!skipHistoryUpdate) {
-      history.push('/');
+      history.push('/cards');
     }
   };
 
