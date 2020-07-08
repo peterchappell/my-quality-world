@@ -7,9 +7,9 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 
-import { MAX_LEVEL } from 'utils/constants';
+import { MAX_FOR_ITEM } from 'utils/constants';
 
-const MAX = MAX_LEVEL;
+const MAX = MAX_FOR_ITEM;
 const MIN = 0;
 const STEP = 0.1;
 

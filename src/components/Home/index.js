@@ -40,7 +40,7 @@ const Home = (props) => {
     itemsCheck.forEach((item) => {
       needScore += item[need] * item.level;
     });
-    return (needScore / maxForNeed) * 100;
+    return Math.min((needScore / maxForNeed) * 100, 100);
   };
 
   return (
