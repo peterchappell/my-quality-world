@@ -132,11 +132,11 @@ const MapView = (props) => {
           x={item.posX || 100}
           y={item.posY || 100}
           offset={{
-            x: ITEM_SIZE / 2,
-            y: itemHeight / 2,
+            x: (ITEM_SIZE / 2) - 3,
+            y: (itemHeight / 2) - 3,
           }}
-          width={ITEM_SIZE}
-          height={itemHeight}
+          width={ITEM_SIZE - 6}
+          height={itemHeight - 6}
           stroke="#ccc"
           strokeWidth={3}
           fill="#fff"
