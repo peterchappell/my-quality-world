@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react';
 import Container from '@material-ui/core/Container';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import {
-  Route, Switch, useParams, useHistory,
+  Route,
+  Switch,
+  useParams,
+  useHistory,
 } from 'react-router-dom';
 
 import db, { tableName } from 'utils/db';
@@ -116,7 +119,11 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <section className={classes.appContainer}>
         <AppHeader />
-        <Container component="main" className={classes.mainContainer} maxWidth={false}>
+        <Container
+          component="main"
+          className={classes.mainContainer}
+          maxWidth={false}
+        >
           <Switch>
             <Route path="/new">
               <ItemAdd saveHandler={addItem} />

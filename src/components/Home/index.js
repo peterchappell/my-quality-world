@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   needsContainer: {
-    margin: [[theme.spacing(2), 'auto', 0]],
     maxWidth: '700px',
+    margin: [[theme.spacing(2), 'auto', 0]],
   },
 }));
 
@@ -40,7 +40,11 @@ const Home = (props) => {
     itemsCheck.forEach((item) => {
       needScore += item[need] * item.level;
     });
-    return Math.min((needScore / maxForNeed) * 100, 100);
+    needScore = Math.min((needScore / maxForNeed) * 100, 100);
+    if (needScore < 0) {
+      needScore = 0;
+    }
+    return needScore;
   };
 
   return (
@@ -56,17 +60,19 @@ const Home = (props) => {
       <Typography variant="body1" component="p" gutterBottom>
         Here is an overview of how your quality world is meeting your needs.
       </Typography>
-      <Grid container spacing={3} className={classes.needsContainer}>
-        { NEEDS.map((need) => (
-          <Grid item xs key={`need_score_${need.key}`}>
-            <NeedsChart
-              value={calculateNeedMetPercent(need.key)}
-              label={need.name}
-              colour={need.colour}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      <div className={classes.needsContainer}>
+        <Grid container spacing={3}>
+          { NEEDS.map((need) => (
+            <Grid item xs key={`need_score_${need.key}`}>
+              <NeedsChart
+                value={calculateNeedMetPercent(need.key)}
+                label={need.name}
+                colour={need.colour}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </div>
     </div>
   );
 };

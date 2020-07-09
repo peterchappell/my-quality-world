@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   valueCircle: {
     strokeLinecap: 'round',
-    color: (props) => props.colour,
+    color: ({ colour }) => colour,
   },
   outerContainer: {
     display: 'inline-flex',
@@ -33,6 +33,7 @@ const NeedsChart = (props) => {
   const {
     value,
     label,
+    // eslint-disable-next-line no-unused-vars
     colour,
   } = props;
 
@@ -58,7 +59,6 @@ const NeedsChart = (props) => {
             classes={{
               circle: classes.valueCircle,
             }}
-            color={colour}
           />
         </div>
         <Box
