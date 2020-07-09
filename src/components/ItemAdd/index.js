@@ -11,6 +11,9 @@ import Typography from '@material-ui/core/Typography';
 
 import getCroppedImg from './cropImage';
 
+const ASPECT = 4 / 3;
+const WIDTH = 800;
+
 const useStyles = makeStyles((theme) => createStyles({
   fileInput: {
     display: 'none',
@@ -26,7 +29,7 @@ const useStyles = makeStyles((theme) => createStyles({
   },
   cropContainer: {
     backgroundColor: '#fff',
-    flex: [[1, 0, '200px']],
+    flex: [[1, 0, '220px']],
     marginTop: theme.spacing(1),
     position: 'relative',
   },
@@ -73,7 +76,15 @@ export default function AppAdd(props) {
 
   const cropImageAndSave = async () => {
     setIsCropping(true);
-    const imgToSave = await getCroppedImg(fileUpload, croppedAreaPixels);
+    const imgToSave = await getCroppedImg(
+      fileUpload,
+      croppedAreaPixels,
+      0,
+      {
+        width: WIDTH,
+        aspect: ASPECT,
+      },
+    );
     setIsCropping(false);
     saveHandler(imgToSave);
   };
@@ -115,7 +126,7 @@ export default function AppAdd(props) {
                   image={fileUpload}
                   crop={crop}
                   zoom={zoom}
-                  aspect={4 / 3}
+                  aspect={ASPECT}
                   onCropChange={setCrop}
                   onCropComplete={onCropComplete}
                   onZoomChange={setZoom}
