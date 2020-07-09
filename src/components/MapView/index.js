@@ -12,6 +12,7 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import NeedsStatusPanel from 'components/NeedsStatusPanel';
 import { MAX_LEVEL } from 'utils/constants';
 
 const CANVAS_HEIGHT = 1000;
@@ -37,6 +38,8 @@ const MapView = (props) => {
 
   const classes = useStyles();
   const containerRef = useRef();
+  const [showUserStatus, setShowUserStatus] = useState(true);
+  const [showUserStatusOnDrag, setShowUserStatusOnDrag] = useState(true);
   const [mapHeight, setMapHeight] = useState(300);
   const [mapWidth, setMapWidth] = useState(300);
   const [mapScale, setMapScale] = useState(1);
@@ -100,6 +103,16 @@ const MapView = (props) => {
     handleSaveItem(updatedItem, true);
   };
 
+  const toggleUserStatus = () => {
+    setShowUserStatus(!showUserStatus);
+  };
+
+  const handleUserStatusOnDrag = (isDragging) => {
+    if (showUserStatus) {
+      setShowUserStatusOnDrag(!isDragging);
+    }
+  };
+
   const renderItem = (item) => {
     const imgEl = document.createElement('img');
     imgEl.src = item.image;
@@ -108,7 +121,7 @@ const MapView = (props) => {
       <React.Fragment key={`map_item_${item.id}`}>
         <Line
           stroke="#ccc"
-          strokeWidth={3}
+          strokeWidth={2}
           points={[
             0,
             0,
@@ -132,10 +145,14 @@ const MapView = (props) => {
         <Group
           draggable
           dragBoundFunc={handleCanvasBounds}
-          onDragStart={handleDragStartShadow}
+          onDragStart={(event) => {
+            handleDragStartShadow(event);
+            handleUserStatusOnDrag(true);
+          }}
           onDragEnd={(event) => {
             handleDragEndShadow(event);
             saveItem(item, event.currentTarget.attrs);
+            handleUserStatusOnDrag(false);
           }}
           x={item.posX || 100}
           y={item.posY || 100}
@@ -203,8 +220,6 @@ const MapView = (props) => {
             shadowColor="black"
             shadowBlur={10}
             shadowOpacity={0.3}
-            shadowOffsetX={5}
-            shadowOffsetY={5}
             scaleX={1 / mapScaleX}
             scaleY={1 / mapScaleY}
           />
@@ -227,8 +242,19 @@ const MapView = (props) => {
             y={10 * mapScale}
             offsetX={(ITEM_SIZE / 4) * mapScale}
           />
+          <Circle
+            fill="transparent"
+            radius={(ITEM_SIZE * mapScale) / 2}
+            x={0}
+            y={0}
+            scaleX={1 / mapScaleX}
+            scaleY={1 / mapScaleY}
+            onMouseUp={toggleUserStatus}
+            onTap={toggleUserStatus}
+          />
         </Layer>
       </Stage>
+      <NeedsStatusPanel items={items} isShowing={showUserStatus && showUserStatusOnDrag} />
     </div>
   );
 };

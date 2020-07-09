@@ -5,11 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import NeedsChart from 'components/NeedsChart';
-import {
-  NEEDS,
-  MAX_FOR_ITEM,
-  MAX_LEVEL,
-} from 'utils/constants';
+import calculateNeedMetPercent from 'utils/calculateNeedMetPercent';
+import { NEEDS } from 'utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -33,20 +30,6 @@ const Home = (props) => {
 
   const classes = useStyles();
 
-  const calculateNeedMetPercent = (need) => {
-    const itemsCheck = [...items];
-    const maxForNeed = itemsCheck.length * MAX_FOR_ITEM * MAX_LEVEL;
-    let needScore = 0;
-    itemsCheck.forEach((item) => {
-      needScore += item[need] * item.level;
-    });
-    needScore = Math.min((needScore / maxForNeed) * 100, 100);
-    if (needScore < 0) {
-      needScore = 0;
-    }
-    return needScore;
-  };
-
   return (
     <div className={classes.container}>
       <Typography variant="h4" component="h2" gutterBottom>
@@ -65,7 +48,7 @@ const Home = (props) => {
           { NEEDS.map((need) => (
             <Grid item xs key={`need_score_${need.key}`}>
               <NeedsChart
-                value={calculateNeedMetPercent(need.key)}
+                value={calculateNeedMetPercent(need.key, items)}
                 label={need.name}
                 colour={need.colour}
               />

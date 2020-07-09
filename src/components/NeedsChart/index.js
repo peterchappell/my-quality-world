@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   label: {
     display: 'block',
+    fontSize: ({ type }) => (type === 'mini' ? '0.6rem' : '0.75rem'),
   },
 }));
 
@@ -35,6 +36,8 @@ const NeedsChart = (props) => {
     label,
     // eslint-disable-next-line no-unused-vars
     colour,
+    type,
+    hideValue,
   } = props;
 
   const classes = useStyles(props);
@@ -46,14 +49,14 @@ const NeedsChart = (props) => {
           <CircularProgress
             variant="static"
             value={100}
-            size={60}
+            size={type === 'mini' ? 20 : 60}
             thickness={4}
             className={classes.background}
           />
           <CircularProgress
             variant="static"
             value={value}
-            size={60}
+            size={type === 'mini' ? 20 : 60}
             thickness={4}
             className={classes.value}
             classes={{
@@ -61,24 +64,28 @@ const NeedsChart = (props) => {
             }}
           />
         </div>
-        <Box
-          top={0}
-          left={0}
-          bottom={0}
-          right={0}
-          position="absolute"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Typography variant="caption" component="div" color="textSecondary">
-            {`${Math.round(value)}%`}
-          </Typography>
-        </Box>
+        { !hideValue && (
+          <Box
+            top={0}
+            left={0}
+            bottom={0}
+            right={0}
+            position="absolute"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Typography variant="caption" component="div" color="textSecondary">
+              {`${Math.round(value)}%`}
+            </Typography>
+          </Box>
+        )}
       </Box>
-      <Typography variant="caption" className={classes.label}>
-        {label}
-      </Typography>
+      {label && (
+        <Typography variant="caption" className={classes.label}>
+          {label}
+        </Typography>
+      )}
     </>
   );
 };
