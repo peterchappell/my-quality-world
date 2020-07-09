@@ -56,6 +56,7 @@ const App = () => {
     const newItem = {
       ...NEW_ITEM,
       image: itemData,
+      imageRatio: 3 / 4, // TODO: Do this better
       name: '',
     };
     db.table(tableName)
@@ -69,8 +70,8 @@ const App = () => {
           },
         ]);
         setCurrentItemIndex(items.length);
+        history.push(`/edit/${id}`);
       });
-    history.push('/cards');
   };
 
   const saveItem = (itemData, skipHistoryUpdate) => {
@@ -140,13 +141,7 @@ const App = () => {
                 items={items}
                 itemIndex={currentItemIndex}
                 onSlide={handleCardSlide}
-                handleSaveItem={saveItem}
               />
-              <p>
-                {currentItemIndex + 1}
-                /
-                {`${items.length}`}
-              </p>
               <AppAdd />
             </Route>
             <Route path="/">

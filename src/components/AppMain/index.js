@@ -1,16 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
 
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
+    alignItems: 'center',
+    display: 'flex',
     margin: [[0, 'auto']],
   },
   itemImage: {
-    margin: theme.spacing(1),
-    maxWidth: '80%',
+    maxWidth: '500px',
+    width: '100%',
+  },
+  card: {
+    backgroundColor: '#fff',
+    margin: [[theme.spacing(2), 'auto']],
   },
 }));
 
@@ -19,22 +30,17 @@ const AppMain = (props) => {
     items,
     itemIndex,
     onSlide,
-    handleSaveItem,
   } = props;
 
   const classes = useStyles();
-
-  const setImageRatio = (item, imageAttrs) => {
-    if (!item.imageRatio) {
-      handleSaveItem({
-        ...item,
-        imageRatio: imageAttrs.height / imageAttrs.width,
-      }, true);
-    }
-  };
+  const history = useHistory();
 
   const updateIndex = (newIndex) => {
     onSlide(newIndex);
+  };
+
+  const editItem = (itemId) => {
+    history.push(`/edit/${itemId}`);
   };
 
   return (
@@ -43,26 +49,35 @@ const AppMain = (props) => {
         enableMouseEvents
         index={itemIndex}
         onChangeIndex={updateIndex}
+        slideStyle={{ display: 'flex', alignItems: 'center' }}
       >
         { items.map((item) => (
-          <div
-            key={`card_${item.id}`}
-          >
-            <div style={{ padding: '1 em', display: 'block' }}>
-              { item.image && (
-                <img
-                  src={item.image}
-                  alt={`${item.name}`}
-                  className={classes.itemImage}
-                  onLoad={(event) => setImageRatio(item, event.target)}
-                />
-              )}
-              <p>{item.name}</p>
-              <Link to={`/edit/${item.id}`}>
-                edit
-              </Link>
-            </div>
-          </div>
+          <Card key={`card_${item.id}`} className={classes.card} raised>
+            { item.image && (
+              <img
+                src={item.image}
+                alt={`${item.name}`}
+                className={classes.itemImage}
+              />
+            )}
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h3">
+                Name
+                {item.name}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                size="small"
+                color="primary"
+                onClick={() => {
+                  editItem(item.id);
+                }}
+              >
+                Edit this item
+              </Button>
+            </CardActions>
+          </Card>
         ))}
       </SwipeableViews>
     </div>
