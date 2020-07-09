@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 const useStyles = makeStyles((theme) => createStyles({
   fab: {
     bottom: theme.spacing(2),
+    color: 'white',
     display: 'block',
     position: 'absolute',
     right: theme.spacing(2),

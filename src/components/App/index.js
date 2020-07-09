@@ -133,6 +133,7 @@ const App = () => {
             </Route>
             <Route path="/map">
               <MapView items={items} handleSaveItem={saveItem} />
+              <AppAdd />
             </Route>
             <Route path="/cards">
               <AppMain
@@ -150,6 +151,7 @@ const App = () => {
             </Route>
             <Route path="/">
               <Home items={items} />
+              <AppAdd />
             </Route>
           </Switch>
         </Container>

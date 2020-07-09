@@ -33,7 +33,7 @@ const Home = (props) => {
   return (
     <div className={classes.container}>
       <Typography variant="h4" component="h2" gutterBottom>
-        Welome
+        Welcome
       </Typography>
       <Typography variant="body1" component="p" gutterBottom>
         You have
