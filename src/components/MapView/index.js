@@ -174,17 +174,6 @@ const MapView = (props) => {
     ));
     setMapScaleX(containerRef.current.offsetWidth / CANVAS_WIDTH);
     setMapScaleY(containerRef.current.offsetHeight / CANVAS_HEIGHT);
-    console.log(
-      'scale',
-      containerRef.current.offsetWidth / CANVAS_WIDTH,
-      containerRef.current.offsetHeight / CANVAS_HEIGHT,
-      Math.min(
-        containerRef.current.offsetWidth / CANVAS_WIDTH,
-        containerRef.current.offsetHeight / CANVAS_HEIGHT,
-      ),
-      containerRef.current.offsetWidth,
-      containerRef.current.offsetHeight,
-    );
   });
 
   return (
@@ -214,10 +203,29 @@ const MapView = (props) => {
             shadowColor="black"
             shadowBlur={10}
             shadowOpacity={0.3}
-            shadowOffsetX={10}
-            shadowOffsetY={10}
+            shadowOffsetX={5}
+            shadowOffsetY={5}
             scaleX={1 / mapScaleX}
             scaleY={1 / mapScaleY}
+          />
+          <Circle
+            fill="#333"
+            radius={(ITEM_SIZE * mapScale) / 6}
+            x={0}
+            y={-30 * mapScale}
+            scaleX={1 / mapScaleX}
+            scaleY={1 / mapScaleY}
+          />
+          <Rect
+            cornerRadius={2}
+            width={(ITEM_SIZE / 2) * mapScale}
+            height={(ITEM_SIZE / 4) * mapScale}
+            fill="#333"
+            scaleX={1 / mapScaleX}
+            scaleY={1 / mapScaleY}
+            x={0}
+            y={10 * mapScale}
+            offsetX={(ITEM_SIZE / 4) * mapScale}
           />
         </Layer>
       </Stage>
