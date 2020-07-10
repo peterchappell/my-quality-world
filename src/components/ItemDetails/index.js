@@ -24,16 +24,16 @@ const useStyles = makeStyles((theme) => createStyles({
     maxWidth: '100%',
   },
   container: {
+    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3),
     [theme.breakpoints.down('xs')]: {
+      marginBottom: 0,
+      marginTop: 0,
       paddingBottom: theme.spacing(2),
       paddingTop: theme.spacing(2),
     },
-  },
-  outerContainer: {
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
   },
   imageGrid: {
     marginBottom: theme.spacing(2),
@@ -74,7 +74,7 @@ const ItemDetails = (props) => {
   }, [item]);
 
   return (
-    <Container maxWidth="sm" className={classes.outerContainer} disableGutters>
+    <Container maxWidth="sm" disableGutters>
       <Paper>
         <Container className={classes.container}>
           <Grid container spacing={2} className={classes.imageGrid}>

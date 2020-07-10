@@ -13,7 +13,7 @@ import db, { tableName } from 'utils/db';
 import theme from 'utils/muiTheme';
 import AppAdd from 'components/AppAdd';
 import AppHeader from 'components/AppHeader';
-import AppMain from 'components/AppMain';
+import ItemCards from 'components/ItemCards';
 import AppNav from 'components/AppNav';
 import Home from 'components/Home';
 import ItemAdd from 'components/ItemAdd';
@@ -124,6 +124,7 @@ const App = () => {
           component="main"
           className={classes.mainContainer}
           maxWidth={false}
+          disableGutters
         >
           <Switch>
             <Route path="/new">
@@ -137,7 +138,7 @@ const App = () => {
               <AppAdd />
             </Route>
             <Route path="/cards">
-              <AppMain
+              <ItemCards
                 items={items}
                 itemIndex={currentItemIndex}
                 onSlide={handleCardSlide}

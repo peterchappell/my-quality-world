@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
@@ -18,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   needsContainer: {
-    maxWidth: '700px',
     margin: [[theme.spacing(2), 'auto', 0]],
   },
 }));
@@ -31,7 +31,7 @@ const Home = (props) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.container}>
+    <Container maxWidth="md" className={classes.container}>
       <Typography variant="h4" component="h2" gutterBottom>
         Welcome
       </Typography>
@@ -56,7 +56,7 @@ const Home = (props) => {
           ))}
         </Grid>
       </div>
-    </div>
+    </Container>
   );
 };
 
