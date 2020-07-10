@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 import ItemDetailsSlider from 'components/ItemDetailsSlider';
+import { NEEDS } from 'utils/constants';
 
 const useStyles = makeStyles((theme) => createStyles({
   root: {
@@ -14,6 +19,24 @@ const useStyles = makeStyles((theme) => createStyles({
   },
   field: {
     width: '100%',
+  },
+  itemImage: {
+    maxWidth: '100%',
+  },
+  container: {
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3),
+    [theme.breakpoints.down('xs')]: {
+      paddingBottom: theme.spacing(2),
+      paddingTop: theme.spacing(2),
+    },
+  },
+  outerContainer: {
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+  },
+  imageGrid: {
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -51,44 +74,50 @@ const ItemDetails = (props) => {
   }, [item]);
 
   return (
-    <form className={classes.root} noValidate autoComplete="off" onSubmit={submitItem}>
-      <div>
-        <TextField id="standard-basic" label="Name" value={thisItem.name} onChange={handleChange} className={classes.field} />
-      </div>
-      <ItemDetailsSlider
-        propertyName="physiology"
-        label="Physiology"
-        currentValue={thisItem.physiology}
-        changeHandler={handleSliderChange}
-      />
-      <ItemDetailsSlider
-        propertyName="loveAndBelonging"
-        label="Love and Belonging"
-        currentValue={thisItem.loveAndBelonging}
-        changeHandler={handleSliderChange}
-      />
-      <ItemDetailsSlider
-        propertyName="power"
-        label="Power"
-        currentValue={thisItem.power}
-        changeHandler={handleSliderChange}
-      />
-      <ItemDetailsSlider
-        propertyName="fun"
-        label="Fun"
-        currentValue={thisItem.fun}
-        changeHandler={handleSliderChange}
-      />
-      <ItemDetailsSlider
-        propertyName="freedom"
-        label="Freedom"
-        currentValue={thisItem.freedom}
-        changeHandler={handleSliderChange}
-      />
-      <Button variant="contained" color="primary" onClick={submitItem}>
-        Save
-      </Button>
-    </form>
+    <Container maxWidth="sm" className={classes.outerContainer} disableGutters>
+      <Paper>
+        <Container className={classes.container}>
+          <Grid container spacing={2} className={classes.imageGrid}>
+            <Grid item sm={4} xs={12}>
+              { item.image && (
+                <img
+                  src={item.image}
+                  alt={`${item.name}`}
+                  className={classes.itemImage}
+                />
+              )}
+            </Grid>
+            <Grid item sm={8} xs={12}>
+              <TextField
+                label="Item name"
+                value={thisItem.name}
+                onChange={handleChange}
+                className={classes.field}
+                placeholder="Untitled"
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
+          <Typography variant="body2" component="p" gutterBottom>
+            Use the sliders below to indicate how this quality world image satisfies your needs.
+          </Typography>
+          {NEEDS.map((need) => (
+            <ItemDetailsSlider
+              propertyName={need.key}
+              label={need.name}
+              currentValue={thisItem[need.key]}
+              changeHandler={handleSliderChange}
+              key={`slider_${need.key}`}
+              colour={need.colour}
+              description={need.description}
+            />
+          ))}
+          <Button variant="contained" color="primary" onClick={submitItem}>
+            Save
+          </Button>
+        </Container>
+      </Paper>
+    </Container>
   );
 };
 

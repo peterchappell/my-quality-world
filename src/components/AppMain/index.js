@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,12 +17,14 @@ const useStyles = makeStyles((theme) => ({
     margin: [[0, 'auto']],
   },
   itemImage: {
-    maxWidth: '500px',
     width: '100%',
   },
   card: {
     backgroundColor: '#fff',
     margin: [[theme.spacing(2), 'auto']],
+  },
+  untitled: {
+    color: '#999',
   },
 }));
 
@@ -52,32 +55,33 @@ const AppMain = (props) => {
         slideStyle={{ display: 'flex', alignItems: 'center' }}
       >
         { items.map((item) => (
-          <Card key={`card_${item.id}`} className={classes.card} raised>
-            { item.image && (
-              <img
-                src={item.image}
-                alt={`${item.name}`}
-                className={classes.itemImage}
-              />
-            )}
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h3">
-                Name
-                {item.name}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                size="small"
-                color="primary"
-                onClick={() => {
-                  editItem(item.id);
-                }}
-              >
-                Edit this item
-              </Button>
-            </CardActions>
-          </Card>
+          <Container maxWidth="sm" disableGutters>
+            <Card key={`card_${item.id}`} className={classes.card} raised>
+              { item.image && (
+                <img
+                  src={item.image}
+                  alt={`${item.name}`}
+                  className={classes.itemImage}
+                />
+              )}
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h3" className={!item.name && classes.untitled}>
+                  {item.name || 'Untitled'}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={() => {
+                    editItem(item.id);
+                  }}
+                >
+                  Edit this item
+                </Button>
+              </CardActions>
+            </Card>
+          </Container>
         ))}
       </SwipeableViews>
     </div>
