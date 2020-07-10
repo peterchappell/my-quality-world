@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
   },
   mainContainer: {
-    height: '100%',
+    flexBasis: '100%',
     overflowY: 'auto',
     position: 'relative',
   },
@@ -96,10 +96,6 @@ const App = () => {
     db.table(tableName).delete(itemId);
   };
 
-  const handleCardSlide = (slideToIndex) => {
-    setCurrentItemIndex(slideToIndex);
-  };
-
   const RenderDetails = () => {
     const { itemId } = useParams();
     const editingItem = items.find((item) => item.id === parseInt(itemId, 10));
@@ -150,7 +146,6 @@ const App = () => {
               <ItemCards
                 items={items}
                 itemIndex={currentItemIndex}
-                onSlide={handleCardSlide}
               />
               <AppAdd />
             </Route>

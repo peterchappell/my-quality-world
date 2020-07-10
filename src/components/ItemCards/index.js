@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
+import { virtualize } from 'react-swipeable-views-utils';
+import { mod } from 'react-swipeable-views-core';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -13,31 +15,37 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const VirtualizeSwipeableViews = virtualize(SwipeableViews);
+
 const ItemCards = (props) => {
   const {
     items,
     itemIndex,
-    onSlide,
   } = props;
 
   const classes = useStyles();
+  const [currentIndex, setCurrentIndex] = useState(itemIndex);
 
   const updateIndex = (newIndex) => {
-    onSlide(newIndex);
+    setCurrentIndex(newIndex);
   };
+
+  const slideRenderer = ({ key, index }) => (
+    <ItemCard key={`card_${key}`} item={items[mod(index, items.length)]} />
+  );
+
+  if (!items.length) {
+    return null;
+  }
 
   return (
     <div className={classes.mainContainer}>
-      <SwipeableViews
-        enableMouseEvents
-        index={itemIndex}
+      <VirtualizeSwipeableViews
+        index={currentIndex}
         onChangeIndex={updateIndex}
-        slideStyle={{ display: 'flex', alignItems: 'center' }}
-      >
-        { items.map((item) => (
-          <ItemCard key={`card_${item.id}`} item={item} />
-        ))}
-      </SwipeableViews>
+        enableMouseEvents
+        slideRenderer={slideRenderer}
+      />
     </div>
   );
 };
