@@ -11,12 +11,14 @@ import { NEEDS } from 'utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    justifyContent: 'center',
     display: 'flex',
     flexDirection: 'column',
     height: `calc(100% - ${theme.spacing(4)}px)`,
     margin: [[theme.spacing(2), 0]],
     textAlign: 'center',
+    [theme.breakpoints.up('sm')]: {
+      justifyContent: 'center',
+    },
   },
   needsContainer: {
     margin: [[theme.spacing(2), 'auto', 0]],
