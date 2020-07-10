@@ -91,7 +91,7 @@ export default function AppAdd(props) {
 
   return (
     <>
-      <Container disableGutters>
+      <Container>
         <div className={classes.uploadContainer}>
           { !fileUpload && (
             <>

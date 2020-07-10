@@ -160,7 +160,10 @@ const App = () => {
             </Route>
           </Switch>
         </Container>
-        <AppNav navValue={currentNavValue} navChangeHandler={setCurrentNavValue} />
+        <AppNav
+          navValue={currentNavValue}
+          navChangeHandler={setCurrentNavValue}
+        />
       </section>
     </ThemeProvider>
   );
