@@ -100,7 +100,7 @@ const MapView = (props) => {
       posY: shapeAttributes.y,
       level: calculateNewLevel(shapeAttributes.x, shapeAttributes.y),
     };
-    handleSaveItem(updatedItem, true);
+    handleSaveItem(updatedItem);
   };
 
   const toggleUserStatus = () => {

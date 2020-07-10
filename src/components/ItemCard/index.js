@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Container from '@material-ui/core/Container';
+import EditIcon from '@material-ui/icons/Edit';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   },
   untitled: {
     color: '#999',
+  },
+  editAction: {
+    flexDirection: 'row-reverse',
   },
 }));
 
@@ -45,19 +49,20 @@ const ItemCard = (props) => {
           />
         )}
         <CardContent>
-          <Typography gutterBottom variant="subtitle1" component="h3" className={!item.name && classes.untitled}>
+          <Typography gutterBottom variant="subtitle1" component="h3" className={!item.name ? classes.untitled : ''}>
             {item.name || 'Untitled'}
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions className={classes.editAction}>
           <Button
             size="small"
             color="primary"
             onClick={() => {
               editItem(item.id);
             }}
+            startIcon={<EditIcon />}
           >
-            Edit this item
+            Edit
           </Button>
         </CardActions>
       </Card>

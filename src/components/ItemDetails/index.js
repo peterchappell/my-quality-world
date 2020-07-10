@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import SaveIcon from '@material-ui/icons/Save';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
+import ConfirmDelete from 'components/ConfirmDelete';
 import ItemDetailsSlider from 'components/ItemDetailsSlider';
 import { NEEDS } from 'utils/constants';
 
@@ -38,16 +43,30 @@ const useStyles = makeStyles((theme) => createStyles({
   imageGrid: {
     marginBottom: theme.spacing(2),
   },
+  actionDivider: {
+    marginTop: theme.spacing(2),
+  },
+  actionArea: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing(2),
+  },
+  deleteButton: {
+    color: theme.palette.error.dark,
+  },
 }));
 
 const ItemDetails = (props) => {
   const {
     saveHandler,
+    deleteHandler,
     item,
   } = props;
 
   const classes = useStyles();
+  const history = useHistory();
   const [thisItem, setThisItem] = useState(item);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleChange = (event) => {
     setThisItem({
@@ -64,9 +83,18 @@ const ItemDetails = (props) => {
     setThisItem(updatedItem);
   };
 
-  const submitItem = (event) => {
-    event.preventDefault();
+  const saveAndGo = () => {
     saveHandler(thisItem);
+    history.push('/cards');
+  };
+
+  const doDelete = () => {
+    deleteHandler(item.id);
+    history.push('/cards');
+  };
+
+  const closeConfirmDelete = () => {
+    setIsDeleting(false);
   };
 
   useEffect(() => {
@@ -112,11 +140,35 @@ const ItemDetails = (props) => {
               description={need.description}
             />
           ))}
-          <Button variant="contained" color="primary" onClick={submitItem}>
-            Save
-          </Button>
+          <Divider className={classes.actionDivider} />
+          <div className={classes.actionArea}>
+            <Button
+              size="small"
+              onClick={saveAndGo}
+              color="primary"
+              startIcon={<SaveIcon />}
+              variant="contained"
+            >
+              Save
+            </Button>
+            <Button
+              size="small"
+              className={classes.deleteButton}
+              onClick={() => {
+                setIsDeleting(true);
+              }}
+              startIcon={<DeleteIcon />}
+            >
+              Delete
+            </Button>
+          </div>
         </Container>
       </Paper>
+      <ConfirmDelete
+        isOpen={isDeleting}
+        deleteHandler={doDelete}
+        closeHandler={closeConfirmDelete}
+      />
     </Container>
   );
 };

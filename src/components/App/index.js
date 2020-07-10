@@ -74,7 +74,7 @@ const App = () => {
       });
   };
 
-  const saveItem = (itemData, skipHistoryUpdate) => {
+  const saveItem = (itemData) => {
     const updatedItems = [
       ...items,
     ];
@@ -83,9 +83,17 @@ const App = () => {
     setItems(updatedItems);
     setCurrentItemIndex(indexOfUpdate);
     db.table(tableName).update(itemData.id, itemData);
-    if (!skipHistoryUpdate) {
-      history.push('/cards');
-    }
+  };
+
+  const deleteItem = (itemId) => {
+    const updatedItems = [
+      ...items,
+    ];
+    const indexOfItemToRemove = updatedItems.findIndex((item) => item.id === itemId);
+    updatedItems.splice(indexOfItemToRemove, 1);
+    setItems(updatedItems);
+    setCurrentItemIndex(0);
+    db.table(tableName).delete(itemId);
   };
 
   const handleCardSlide = (slideToIndex) => {
@@ -99,6 +107,7 @@ const App = () => {
       return (
         <ItemDetails
           saveHandler={saveItem}
+          deleteHandler={deleteItem}
           item={editingItem}
         />
       );
