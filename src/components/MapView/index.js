@@ -12,7 +12,7 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import NeedsStatusPanel from 'components/NeedsStatusPanel';
+import MapNeedsStatusPanel from 'components/MapNeedsStatusPanel';
 import { MAX_LEVEL } from 'utils/constants';
 
 const CANVAS_HEIGHT = 1000;
@@ -254,7 +254,10 @@ const MapView = (props) => {
           />
         </Layer>
       </Stage>
-      <NeedsStatusPanel items={items} isShowing={showUserStatus && showUserStatusOnDrag} />
+      <MapNeedsStatusPanel
+        items={items}
+        isShowing={showUserStatus && showUserStatusOnDrag && items.length}
+      />
     </div>
   );
 };

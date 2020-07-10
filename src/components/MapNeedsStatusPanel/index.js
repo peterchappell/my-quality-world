@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home = (props) => {
+const MapNeedsStatusPanel = (props) => {
   const {
     items,
     isShowing,
@@ -67,4 +67,4 @@ const Home = (props) => {
   );
 };
 
-export default Home;
+export default MapNeedsStatusPanel;

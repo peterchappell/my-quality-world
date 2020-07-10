@@ -41,6 +41,14 @@ const useStyles = makeStyles((theme) => ({
   buttonHide: {
     display: 'none',
   },
+  noCards: {
+    alignItems: 'center',
+    color: theme.palette.grey['300'],
+    display: 'flex',
+    fontSize: '72px',
+    height: '300px',
+    justifyContent: 'center',
+  },
 }));
 
 const VirtualizeSwipeableViews = virtualize(SwipeableViews);
@@ -64,7 +72,11 @@ const ItemCards = (props) => {
   );
 
   if (!items.length) {
-    return null;
+    return (
+      <div className={classes.noCards}>
+        ...
+      </div>
+    );
   }
 
   return (
