@@ -12,11 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import ItemCard from 'components/ItemCard';
 
 const useStyles = makeStyles((theme) => ({
-  mainContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    margin: [[0, 'auto']],
-  },
   previousButton: {
     background: 'rgba(255,255,255,0.7)',
     borderRadius: '50%',
@@ -84,7 +79,7 @@ const ItemCards = (props) => {
   }
 
   return (
-    <div className={classes.mainContainer}>
+    <div>
       <VirtualizeSwipeableViews
         index={currentIndex}
         onChangeIndex={updateIndex}

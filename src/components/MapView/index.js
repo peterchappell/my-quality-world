@@ -12,6 +12,7 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import useWindowResize from 'utils/useWindowResize';
 import MapInstructions from 'components/MapInstructions';
 import MapNeedsStatusPanel from 'components/MapNeedsStatusPanel';
 import { MAX_LEVEL } from 'utils/constants';
@@ -54,7 +55,7 @@ const MapView = (props) => {
   const [mapScale, setMapScale] = useState(1);
   const [mapScaleX, setMapScaleX] = useState(1);
   const [mapScaleY, setMapScaleY] = useState(1);
-  const useEffectOnlyOnMount = (mountFunction) => useEffect(mountFunction, []);
+  const windowSize = useWindowResize();
 
   const calculateNewLevel = (posX, posY) => {
     const absolutePosX = Math.abs(posX);
@@ -145,7 +146,7 @@ const MapView = (props) => {
   const renderItem = (item) => {
     const imgEl = document.createElement('img');
     imgEl.src = item.image;
-    const itemHeight = item.imageRatio * 100 * mapScaleX;
+    const itemHeight = item.imageRatio * ITEM_SIZE * mapScaleX;
     const itemPosition = getItemPosition(item);
     return (
       <React.Fragment key={`map_item_${item.id}`}>
@@ -201,9 +202,13 @@ const MapView = (props) => {
             shadowColor="black"
             shadowBlur={10}
             shadowOpacity={0.3}
-            width={ITEM_SIZE}
-            height={itemHeight}
+            width={ITEM_SIZE - 2}
+            height={itemHeight - 2}
             fill="#000"
+            offset={{
+              x: -1,
+              y: -1,
+            }}
           />
           <Image
             image={imgEl}
@@ -215,7 +220,7 @@ const MapView = (props) => {
     );
   };
 
-  useEffectOnlyOnMount(() => {
+  const setUpForDraw = () => {
     setMapHeight(containerRef.current.offsetHeight);
     setMapWidth(containerRef.current.offsetWidth);
     setMapScale(Math.min(
@@ -224,7 +229,11 @@ const MapView = (props) => {
     ));
     setMapScaleX(containerRef.current.offsetWidth / CANVAS_WIDTH);
     setMapScaleY(containerRef.current.offsetHeight / CANVAS_HEIGHT);
-  });
+  };
+
+  useEffect(() => {
+    setUpForDraw();
+  }, [windowSize.width, windowSize.height]);
 
   return (
     <div className={classes.mapContainer} ref={containerRef}>

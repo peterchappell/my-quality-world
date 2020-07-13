@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     height: `calc(100% - ${theme.spacing(4)}px)`,
-    margin: [[theme.spacing(2), 0]],
+    margin: [[theme.spacing(2), 'auto']],
     textAlign: 'center',
     [theme.breakpoints.up('sm')]: {
       justifyContent: 'center',
