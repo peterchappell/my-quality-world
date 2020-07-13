@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6427b1887d7138458180f3f85b7dab72",
+    "revision": "7646752ccb5b9cd09a01e691dd192d5e",
     "url": "/my-quality-world/index.html"
   },
   {
-    "revision": "3971d9412aad2c763f01",
+    "revision": "0f98d98cfa7351268b65",
     "url": "/my-quality-world/static/css/main.b24ae09a.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/my-quality-world/static/js/2.966b3f59.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "3971d9412aad2c763f01",
-    "url": "/my-quality-world/static/js/main.574d7d41.chunk.js"
+    "revision": "0f98d98cfa7351268b65",
+    "url": "/my-quality-world/static/js/main.4a5a885f.chunk.js"
   },
   {
     "revision": "304c40b3a7284a840e80",
