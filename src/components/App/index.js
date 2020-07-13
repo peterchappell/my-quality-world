@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Container from '@material-ui/core/Container';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -33,9 +33,12 @@ const useStyles = makeStyles(() => ({
     position: 'relative',
   },
   loading: {
-    flexBasis: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    color: theme.palette.grey[500],
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    textAlign: 'center',
+    top: '30%',
   },
 }));
 
@@ -55,6 +58,7 @@ const App = () => {
   const [items, setItems] = useState([]);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [currentNavValue, setCurrentNavValue] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
   const history = useHistory();
 
   const addItem = (itemData) => {
@@ -122,6 +126,7 @@ const App = () => {
     db.table(tableName)
       .toArray()
       .then((storedItems) => {
+        setIsLoaded(true);
         setItems(storedItems);
       });
   }, []);
@@ -136,7 +141,7 @@ const App = () => {
           maxWidth={false}
           disableGutters
         >
-          <Suspense fallback={<div className={classes.loading}>...</div>}>
+          { isLoaded ? (
             <Switch>
               <Route path="/new">
                 <ItemAdd saveHandler={addItem} />
@@ -160,7 +165,9 @@ const App = () => {
                 <AppAdd />
               </Route>
             </Switch>
-          </Suspense>
+          ) : (
+            <div className={classes.loading}>Loading...</div>
+          )}
         </Container>
         <AppNav
           navValue={currentNavValue}

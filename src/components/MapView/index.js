@@ -12,6 +12,7 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import MapInstructions from 'components/MapInstructions';
 import MapNeedsStatusPanel from 'components/MapNeedsStatusPanel';
 import { MAX_LEVEL } from 'utils/constants';
 import Typography from '@material-ui/core/Typography';
@@ -286,6 +287,9 @@ const MapView = (props) => {
           />
         </Layer>
       </Stage>
+      <MapInstructions
+        numItems={items.length}
+      />
       {items.length ? (
         <MapNeedsStatusPanel
           items={items}
