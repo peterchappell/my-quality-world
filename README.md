@@ -1,4 +1,6 @@
-This is a proof of concept idea for a Quality World App.
+This is a proof of concept idea for a Quality World App. You can have a play with it here:
+
+https://peterchappell.github.io/my-quality-world/
 
 A "Quality World" is an idea from Choice Theory. Our Quality World is our collection of relationships, 
 activities and objects etc that have some value to us. Each item in the Quality World helps us meet
