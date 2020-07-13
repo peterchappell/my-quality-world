@@ -93,12 +93,12 @@ const MapView = (props) => {
     };
   };
 
-  const saveItem = (item, shapeAttributes) => {
+  const saveItem = (item, position) => {
     const updatedItem = {
       ...item,
-      posX: shapeAttributes.x,
-      posY: shapeAttributes.y,
-      level: calculateNewLevel(shapeAttributes.x, shapeAttributes.y),
+      posX: position.x,
+      posY: position.y,
+      level: calculateNewLevel(position.x, position.y),
     };
     handleSaveItem(updatedItem);
   };
@@ -113,10 +113,28 @@ const MapView = (props) => {
     }
   };
 
+  const getItemPosition = (item) => {
+    if (item.posX && item.posY) {
+      return {
+        x: item.posX,
+        y: item.posY,
+      };
+    }
+    const angle = Math.random() * Math.PI * 2;
+    const radiusFromCentre = 300;
+    const position = {
+      x: Math.cos(angle) * radiusFromCentre,
+      y: Math.sin(angle) * radiusFromCentre,
+    };
+    saveItem(item, position);
+    return position;
+  };
+
   const renderItem = (item) => {
     const imgEl = document.createElement('img');
     imgEl.src = item.image;
     const itemHeight = item.imageRatio * 100 * mapScaleX;
+    const itemPosition = getItemPosition(item);
     return (
       <React.Fragment key={`map_item_${item.id}`}>
         <Line
@@ -125,14 +143,14 @@ const MapView = (props) => {
           points={[
             0,
             0,
-            item.posX || 100,
-            item.posY || 100,
+            itemPosition.x,
+            itemPosition.y,
           ]}
         />
         <Rect
           cornerRadius={4}
-          x={item.posX || 100}
-          y={item.posY || 100}
+          x={itemPosition.x}
+          y={itemPosition.y}
           offset={{
             x: (ITEM_SIZE / 2) - 2,
             y: (itemHeight / 2) - 2,
@@ -151,11 +169,14 @@ const MapView = (props) => {
           }}
           onDragEnd={(event) => {
             handleDragEndShadow(event);
-            saveItem(item, event.currentTarget.attrs);
+            saveItem(item, {
+              x: event.currentTarget.attrs.x,
+              y: event.currentTarget.attrs.y,
+            });
             handleUserStatusOnDrag(false);
           }}
-          x={item.posX || 100}
-          y={item.posY || 100}
+          x={itemPosition.x}
+          y={itemPosition.y}
           offset={{
             x: ITEM_SIZE / 2,
             y: itemHeight / 2,
