@@ -1,5 +1,6 @@
 {
   "name": "my-quality-world",
+  "homepage": "http://peterchappell.github.io/my-quality-world/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
