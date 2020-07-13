@@ -42,8 +42,12 @@ const Home = (props) => {
         <>
           <Typography variant="body1" component="p" gutterBottom>
             You have
-            {` ${items.length} `}
-            items in your quality world.
+            { items.length === 1 ? (
+              ' 1 item '
+            ) : (
+              ` ${items.length} items `
+            )}
+            in your quality world.
           </Typography>
           <Typography variant="body1" component="p" gutterBottom>
             Here is an overview of how your quality world is meeting your needs.

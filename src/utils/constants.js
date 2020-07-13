@@ -1,10 +1,10 @@
 export const NEEDS = [
   {
-    name: 'Physiology',
-    shortName: 'Physiology',
+    name: 'Survival',
+    shortName: 'Survival',
     key: 'physiology',
     colour: '#0277BD',
-    description: 'Basic needs for food, shelter, safety and health.',
+    description: 'Basic physiological needs for food, shelter, safety and health.',
   },
   {
     name: 'Love and Belonging',

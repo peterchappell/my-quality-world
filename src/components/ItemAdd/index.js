@@ -91,7 +91,7 @@ export default function AppAdd(props) {
 
   return (
     <>
-      <Container>
+      <Container maxWidth="sm">
         <div className={classes.uploadContainer}>
           { !fileUpload && (
             <>

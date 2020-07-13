@@ -10,6 +10,8 @@ import Container from '@material-ui/core/Container';
 import EditIcon from '@material-ui/icons/Edit';
 import Typography from '@material-ui/core/Typography';
 
+import ItemNeeds from 'components/ItemNeeds';
+
 const useStyles = makeStyles((theme) => ({
   itemImage: {
     width: '100%',
@@ -52,6 +54,7 @@ const ItemCard = (props) => {
           <Typography gutterBottom variant="subtitle1" component="h3" className={!item.name ? classes.untitled : ''}>
             {item.name || 'Untitled'}
           </Typography>
+          <ItemNeeds item={item} />
         </CardContent>
         <CardActions className={classes.editAction}>
           <Button
