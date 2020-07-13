@@ -117,8 +117,8 @@ export default function AppAdd(props) {
             <>
               <div>
                 <Typography variant="body1" component="p" gutterBottom>
-                  Now you can crop your photo so that it fits nicely in the box.
-                  Click the okay button when you&apos;re done.
+                  Now you can crop and move your photo so that it fits
+                  nicely in the box.
                 </Typography>
               </div>
               <div className={classes.cropContainer}>
