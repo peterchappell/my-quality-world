@@ -14,12 +14,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import MapNeedsStatusPanel from 'components/MapNeedsStatusPanel';
 import { MAX_LEVEL } from 'utils/constants';
+import Typography from '@material-ui/core/Typography';
 
 const CANVAS_HEIGHT = 1000;
 const CANVAS_WIDTH = 1000;
 const ITEM_SIZE = 100;
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   mapContainer: {
     display: 'flex',
     height: '100%',
@@ -27,6 +28,13 @@ const useStyles = makeStyles(() => ({
   },
   map: {
     position: 'relative',
+  },
+  noItems: {
+    left: 0,
+    padding: [[theme.spacing(4), theme.spacing(2), theme.spacing(2)]],
+    position: 'absolute',
+    right: 0,
+    textAlign: 'center',
   },
 }));
 
@@ -104,6 +112,9 @@ const MapView = (props) => {
   };
 
   const toggleUserStatus = () => {
+    if (!items.length) {
+      return;
+    }
     setShowUserStatus(!showUserStatus);
   };
 
@@ -275,10 +286,19 @@ const MapView = (props) => {
           />
         </Layer>
       </Stage>
-      <MapNeedsStatusPanel
-        items={items}
-        isShowing={showUserStatus && showUserStatusOnDrag && items.length}
-      />
+      {items.length ? (
+        <MapNeedsStatusPanel
+          items={items}
+          isShowing={showUserStatus && showUserStatusOnDrag}
+        />
+      ) : (
+        <div className={classes.noItems}>
+          <Typography variant="body1" component="p">
+            Your Quality World images will be shown here as items
+            that you can move around and organise...
+          </Typography>
+        </div>
+      )}
     </div>
   );
 };

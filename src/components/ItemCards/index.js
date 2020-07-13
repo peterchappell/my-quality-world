@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import Typography from '@material-ui/core/Typography';
 
 import ItemCard from 'components/ItemCard';
 
@@ -43,11 +44,12 @@ const useStyles = makeStyles((theme) => ({
   },
   noCards: {
     alignItems: 'center',
-    color: theme.palette.grey['300'],
     display: 'flex',
-    fontSize: '72px',
-    height: '300px',
+    flexBasis: '100%',
+    height: '100%',
     justifyContent: 'center',
+    padding: [[0, theme.spacing(2), theme.spacing(4)]],
+    textAlign: 'center',
   },
 }));
 
@@ -74,7 +76,9 @@ const ItemCards = (props) => {
   if (!items.length) {
     return (
       <div className={classes.noCards}>
-        ...
+        <Typography variant="body1" component="p">
+          Your Quality World images will be shown here as cards that you can swipe through...
+        </Typography>
       </div>
     );
   }
@@ -85,6 +89,7 @@ const ItemCards = (props) => {
         index={currentIndex}
         onChangeIndex={updateIndex}
         enableMouseEvents
+        disabled={items.length <= 1}
         onSwitching={() => {
           setIsSliding(true);
         }}
@@ -93,28 +98,32 @@ const ItemCards = (props) => {
         }}
         slideRenderer={slideRenderer}
       />
-      <div className={isSliding ? classes.buttonHide : classes.previousButton}>
-        <IconButton
-          aria-label="Previous"
-          color="primary"
-          onClick={() => {
-            setCurrentIndex(currentIndex - 1);
-          }}
-        >
-          <KeyboardArrowLeftIcon />
-        </IconButton>
-      </div>
-      <div className={isSliding ? classes.buttonHide : classes.nextButton}>
-        <IconButton
-          aria-label="Next"
-          color="primary"
-          onClick={() => {
-            setCurrentIndex(currentIndex + 1);
-          }}
-        >
-          <KeyboardArrowRightIcon />
-        </IconButton>
-      </div>
+      {items.length > 1 && (
+        <>
+          <div className={isSliding ? classes.buttonHide : classes.previousButton}>
+            <IconButton
+              aria-label="Previous"
+              color="primary"
+              onClick={() => {
+                setCurrentIndex(currentIndex - 1);
+              }}
+            >
+              <KeyboardArrowLeftIcon />
+            </IconButton>
+          </div>
+          <div className={isSliding ? classes.buttonHide : classes.nextButton}>
+            <IconButton
+              aria-label="Next"
+              color="primary"
+              onClick={() => {
+                setCurrentIndex(currentIndex + 1);
+              }}
+            >
+              <KeyboardArrowRightIcon />
+            </IconButton>
+          </div>
+        </>
+      )}
     </div>
   );
 };

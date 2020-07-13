@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 
 import Container from '@material-ui/core/Container';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
@@ -31,6 +31,11 @@ const useStyles = makeStyles(() => ({
     flexBasis: '100%',
     overflowY: 'auto',
     position: 'relative',
+  },
+  loading: {
+    flexBasis: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 
@@ -131,29 +136,31 @@ const App = () => {
           maxWidth={false}
           disableGutters
         >
-          <Switch>
-            <Route path="/new">
-              <ItemAdd saveHandler={addItem} />
-            </Route>
-            <Route path="/edit/:itemId">
-              <RenderDetails />
-            </Route>
-            <Route path="/map">
-              <MapView items={items} handleSaveItem={saveItem} />
-              <AppAdd />
-            </Route>
-            <Route path="/cards">
-              <ItemCards
-                items={items}
-                itemIndex={currentItemIndex}
-              />
-              <AppAdd />
-            </Route>
-            <Route path="/">
-              <Home items={items} />
-              <AppAdd />
-            </Route>
-          </Switch>
+          <Suspense fallback={<div className={classes.loading}>...</div>}>
+            <Switch>
+              <Route path="/new">
+                <ItemAdd saveHandler={addItem} />
+              </Route>
+              <Route path="/edit/:itemId">
+                <RenderDetails />
+              </Route>
+              <Route path="/map">
+                <MapView items={items} handleSaveItem={saveItem} />
+                <AppAdd />
+              </Route>
+              <Route path="/cards">
+                <ItemCards
+                  items={items}
+                  itemIndex={currentItemIndex}
+                />
+                <AppAdd />
+              </Route>
+              <Route path="/">
+                <Home items={items} />
+                <AppAdd />
+              </Route>
+            </Switch>
+          </Suspense>
         </Container>
         <AppNav
           navValue={currentNavValue}
