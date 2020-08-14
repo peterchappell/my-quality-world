@@ -7,6 +7,7 @@ import {
   Switch,
   useParams,
   useHistory,
+  useLocation,
 } from 'react-router-dom';
 
 import db, { tableName } from 'utils/db';
@@ -16,6 +17,7 @@ import AppHeader from 'components/AppHeader';
 import ItemCards from 'components/ItemCards';
 import AppNav from 'components/AppNav';
 import Home from 'components/Home';
+import InfoPanel from 'components/InfoPanel';
 import ItemAdd from 'components/ItemAdd';
 import ItemDetails from 'components/ItemDetails';
 import MapView from 'components/MapView';
@@ -56,10 +58,12 @@ const NEW_ITEM = {
 const App = () => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [currentNavValue, setCurrentNavValue] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
   const history = useHistory();
+  const location = useLocation();
 
   const addItem = (itemData) => {
     const newItem = {
@@ -122,6 +126,25 @@ const App = () => {
     );
   };
 
+  const openInfo = () => {
+    history.push('info');
+    setIsInfoOpen(true);
+  };
+
+  const closeInfo = () => {
+    history.push('');
+    setIsInfoOpen(false);
+  };
+
+  useEffect(() => {
+    const pathName = location.pathname.slice(1);
+    if (pathName === 'info') {
+      setIsInfoOpen(true);
+    } else {
+      setIsInfoOpen(false);
+    }
+  }, [location.pathname]);
+
   useEffect(() => {
     db.table(tableName)
       .toArray()
@@ -134,7 +157,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <section className={classes.appContainer}>
-        <AppHeader />
+        <AppHeader openInfoHandler={openInfo} />
         <Container
           component="main"
           className={classes.mainContainer}
@@ -172,6 +195,10 @@ const App = () => {
         <AppNav
           navValue={currentNavValue}
           navChangeHandler={setCurrentNavValue}
+        />
+        <InfoPanel
+          isOpen={isInfoOpen}
+          closeHandler={closeInfo}
         />
       </section>
     </ThemeProvider>

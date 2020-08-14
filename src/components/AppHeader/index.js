@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
+import HelpIcon from '@material-ui/icons/Help';
+import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,7 +21,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const AppHeader = () => {
+const AppHeader = (props) => {
+  const { openInfoHandler } = props;
+
   const classes = useStyles();
 
   return (
@@ -30,6 +34,9 @@ const AppHeader = () => {
             My Quality World
           </Typography>
         </Link>
+        <IconButton edge="end" color="inherit" aria-label="information" onClick={openInfoHandler}>
+          <HelpIcon />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
